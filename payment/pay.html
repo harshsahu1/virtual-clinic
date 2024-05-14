@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Primary Meta Tags -->
+	<link rel="stylesheet" href="css/main.css">
+
+<body>
+	<center>
+		<div class="card">
+			<div class="card-content">
+				<!-- <a href=""><img src="img/logo.png" height="50"></a> -->
+				<br>
+				<h4 style="color: #DAE0E2;">Create UPI Payment Request Link </h4>
+				<img src="img/upi.png" height="100">
+				<br>
+				<div id="paymentdiv" style="display:none;">
+					<textarea class='text-box' rows="4" cols="30" id='paymentURL'></textarea>
+					<br><br>
+					<a onclick='copyUpiUrl()' class='btn' id='btn-copy'>Copy Link</a>
+					<a id='whatsapp' class="btn">Share Link</a>
+				</div>
+				<form id="paymentform">
+					<label style="color: #DAE1E2;">Enter Name:</label><br>
+					<input type="name" name="pn" class="text-box" placeholder="Enter name (Optional):"><br>
+					<label style="color: #DAE1E2;">Enter Upi Id:</label><br>
+					<input type="email" name="pa" class="text-box" placeholder="Enter UPI Id" required><br>
+					<label style="color: #DAE1E2;">Enter Amount (Optional):</label><br>
+					<input type="number" name="am" class="text-box" placeholder="INR"><br>
+					<button type="submit" class="btn">Submit</button>
+				</form>
+				<br>
+			</div>
+		</div>
+	</center>
+
+</body>
+<script>
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const pn = urlParams.get('pn');
+	const pa = urlParams.get('pa');
+	const am = urlParams.get('am');
+	if (pa !== null) {
+		// check prod or dev
+		var paymentURL = window.location.hostname;
+		if (paymentURL.includes("localhost")) {
+			console.log("dev");
+			paymentURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/index.html`;
+		} else {
+			paymentURL = `${window.location.protocol}//${window.location.hostname}/payment`;
+		}
+
+		paymentURL += `?pa=${pa}&pn=${pn}&cu=INR`;
+		if (!isNaN(am) && am !== null && am !== "") {
+			paymentURL += `&am=${am}`;
+		}
+
+		document.getElementById("paymentURL").innerHTML = paymentURL;
+		document.getElementById("whatsapp").href = "https://wa.me/?text=Hi%2C%20You%20can%20pay%20me%20by%20this%20Upi%20Payment%20Link%0A%20" + encodeURIComponent(paymentURL);
+		document.getElementById("paymentdiv").style.display = "block";
+		document.getElementById("paymentform").style.display = "none";
+	}
+	function copyUpiUrl() {
+		var copypayment = document.getElementById("paymentURL");
+		copypayment.select();
+		copypayment.setSelectionRange(0, 99999)
+		document.execCommand("copy");
+		document.getElementById("btn-copy").innerHTML = "Copied";
+	}
+</script>
+
+</html>
