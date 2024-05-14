@@ -7,6 +7,7 @@ import fetchData from '../helper/apiCall';
 import Loading from '../components/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../redux/reducers/rootSlice';
+import jwt_decode from 'jwt-decode';
 import Empty from '../components/Empty';
 
 const Doctors = () => {
@@ -14,9 +15,17 @@ const Doctors = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.root);
 
+  const [user, setUser] = useState(
+    localStorage.getItem('token')
+      ? jwt_decode(localStorage.getItem('token'))
+      : ''
+  );
+  console.log(user);
+
   const fetchAllDocs = async () => {
     dispatch(setLoading(true));
     const data = await fetchData(`/doctor/getalldoctors`);
+    console.log(data);
     setDoctors(data);
     dispatch(setLoading(false));
   };

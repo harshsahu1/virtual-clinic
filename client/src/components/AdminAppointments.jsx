@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
-import Loading from "./Loading";
-import { setLoading } from "../redux/reducers/rootSlice";
-import { useDispatch, useSelector } from "react-redux";
-import Empty from "./Empty";
-import fetchData from "../helper/apiCall";
-import "../styles/user.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import Loading from './Loading';
+import { setLoading } from '../redux/reducers/rootSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import Empty from './Empty';
+import fetchData from '../helper/apiCall';
+import '../styles/user.css';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 
@@ -32,7 +32,7 @@ const AdminAppointments = () => {
     try {
       await toast.promise(
         axios.put(
-          "/appointment/completed",
+          '/appointment/completed',
           {
             appointid: ele?._id,
             doctorId: ele?.doctorId._id,
@@ -40,14 +40,14 @@ const AdminAppointments = () => {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           }
         ),
         {
-          success: "Appointment booked successfully",
-          error: "Unable to book appointment",
-          loading: "Booking appointment...",
+          success: 'Appointment booked successfully',
+          error: 'Unable to book appointment',
+          loading: 'Booking appointment...',
         }
       );
 
@@ -62,10 +62,10 @@ const AdminAppointments = () => {
       {loading ? (
         <Loading />
       ) : (
-        <section className="user-section">
-          <h3 className="home-sub-heading">All Users</h3>
+        <section className='user-section'>
+          <h3 className='home-sub-heading'>All Users</h3>
           {appointments.length > 0 ? (
-            <div className="user-container">
+            <div className='user-container'>
               <table>
                 <thead>
                   <tr>
@@ -83,28 +83,33 @@ const AdminAppointments = () => {
                 </thead>
                 <tbody>
                   {appointments?.map((ele, i) => {
+                    let timeUpdated = ele.updatedAt;
+                    var date = new Date(timeUpdated);
+                    var istTimeUpdated = date.toLocaleString('en-US', {
+                      timeZone: 'Asia/Kolkata',
+                    });
                     return (
                       <tr key={ele?._id}>
                         <td>{i + 1}</td>
                         <td>
                           {ele?.doctorId?.firstname +
-                            " " +
+                            ' ' +
                             ele?.doctorId?.lastname}
                         </td>
                         <td>
-                          {ele?.userId?.firstname + " " + ele?.userId?.lastname}
+                          {ele?.userId?.firstname + ' ' + ele?.userId?.lastname}
                         </td>
                         <td>{ele?.date}</td>
                         <td>{ele?.time}</td>
-                        <td>{ele?.createdAt.split("T")[0]}</td>
-                        <td>{ele?.updatedAt.split("T")[1].split(".")[0]}</td>
+                        <td>{ele?.createdAt.split('T')[0]}</td>
+                        <td>{istTimeUpdated.split(',')[1]}</td>
                         <td>{ele?.status}</td>
                         <td>
                           <button
                             className={`btn user-btn accept-btn ${
-                              ele?.status === "Completed" ? "disable-btn" : ""
+                              ele?.status === 'Completed' ? 'disable-btn' : ''
                             }`}
-                            disabled={ele?.status === "Completed"}
+                            disabled={ele?.status === 'Completed'}
                             onClick={() => complete(ele)}
                           >
                             Complete

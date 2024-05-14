@@ -18,7 +18,6 @@ const Navbar = () => {
       ? jwt_decode(localStorage.getItem('token'))
       : ''
   );
-
   const logoutFunc = () => {
     dispatch(setUserInfo({}));
     localStorage.removeItem('token');
@@ -34,9 +33,6 @@ const Navbar = () => {
         <ul className='nav-links'>
           <li>
             <NavLink to={'/'}>Home</NavLink>
-          </li>
-          <li>
-            <NavLink to={'/doctors'}>Doctors</NavLink>
           </li>
           {token && user.isAdmin && (
             <>
@@ -56,6 +52,29 @@ const Navbar = () => {
               </li>
             </>
           )}
+          {token && user.isDoctor && (
+            <li>
+              <NavLink to={'/'}>
+                <div
+                  onClick={() =>
+                    (window.location.href = 'http://localhost:8081')
+                  }
+                >
+                  Payment
+                </div>
+              </NavLink>
+            </li>
+          )}
+          {token && !user.isDoctor && !user.isAdmin && (
+            <>
+              <li>
+                <NavLink to={'/applyfordoctor'}>Apply for doctor</NavLink>
+              </li>
+              <li>
+                <NavLink to={'/doctors'}>Doctors</NavLink>
+              </li>
+            </>
+          )}
           {token && !user.isAdmin && (
             <>
               <li>
@@ -64,15 +83,6 @@ const Navbar = () => {
               <li>
                 <NavLink to={'/notifications'}>Notifications</NavLink>
               </li>
-              <li>
-                <NavLink to={'/applyfordoctor'}>Apply for doctor</NavLink>
-              </li>
-              <li>
-                <NavLink to={'/payment'}>Payments</NavLink>
-              </li>
-              {/* <li>
-                <HashLink to={'/#contact'}>Contact Us</HashLink>
-              </li> */}
               <li>
                 <NavLink to={'/profile'}>Profile</NavLink>
               </li>

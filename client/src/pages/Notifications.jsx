@@ -49,6 +49,11 @@ const Notifications = () => {
                 </thead>
                 <tbody>
                   {notifications?.map((ele, i) => {
+                    let timeUpdated = ele.updatedAt;
+                    var date = new Date(timeUpdated);
+                    var istTimeUpdated = date.toLocaleString('en-US', {
+                      timeZone: 'Asia/Kolkata',
+                    });
                     return (
                       <tr key={ele?._id}>
                         <td>{i + 1}</td>
@@ -70,7 +75,7 @@ const Notifications = () => {
                           })}
                         </td>
                         <td>{ele?.updatedAt.split('T')[0]}</td>
-                        <td>{ele?.updatedAt.split('T')[1].split('.')[0]}</td>
+                        <td>{istTimeUpdated.split(',')[1]}</td>
                       </tr>
                     );
                   })}

@@ -4,10 +4,11 @@
   "description": "Doctor appointment website",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run start-backend\" \"npm run start-client\" \"npm run start-chat\"",
+    "start": "concurrently \"npm run start-backend\" \"npm run start-client\" \"npm run start-chat\" \"npm run start-payment\"",
     "start-backend": "node server.js",
     "start-client": "cd client && npm start",
-    "start-chat": "cd chat && npm start"
+    "start-chat": "cd chat && npm start",
+    "start-payment": "cd payment && npm start"
   },
   "author": "Harsh",
   "license": "ISC",
